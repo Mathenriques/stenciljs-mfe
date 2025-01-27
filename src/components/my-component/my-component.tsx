@@ -1,4 +1,4 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Component, State, h } from '@stencil/core/internal';
 import { ApiService } from '../../services/api.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { ApiService } from '../../services/api.service';
   shadow: true,
 })
 export class MyComponent {
-  @State() data: any;
+  @State() data: any[] = [];
   @State() validationError: string = '';
   @State() isLoading: boolean = true;
 
@@ -34,12 +34,11 @@ export class MyComponent {
       <div>
         <h1>Lista de Produtos</h1>
         <ul>
-          {this.data.map(product => (
-            <li key={product.id}>
+          {Array.isArray(this.data) && this.data.map(product => (
+            <li>
               <strong>{product.name}</strong>
               {product.data && (
                 <ul>
-                  {/* Iterar sobre as propriedades do objeto data */}
                   {Object.entries(product.data).map(([key, value]) => (
                     <li key={key}>
                       <strong>{key}:</strong> {value}
