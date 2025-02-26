@@ -1,12 +1,16 @@
 export class ApiService {
 
     static async validationApi() {
-        try {
-            const response = await fetch("https://api.restful-api.dev/objects");
-            return await response.json();
-        } catch (error) {
-            console.error("Error on call API: ", error)
-            throw new Error('Erro ao validar com o backend.');
-        }
+        return fetch("https://api.restful-api.dev/objects")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao validar com o backend.');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error("Error on call API: ", error);
+            throw error; // Re-throw the error if needed
+        });
     }
 }

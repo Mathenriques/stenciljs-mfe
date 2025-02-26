@@ -11,15 +11,17 @@ export class MyComponent {
   @State() validationError: string = '';
   @State() isLoading: boolean = true;
 
-  async componentWillLoad() {
-    try {
-      this.data = await ApiService.validationApi();
-    } catch (error) {
-      this.validationError = error.message; // Atualiza o estado com a mensagem de erro
-    } finally {
-      this.isLoading = false; // Atualiza o estado para parar o carregamento
-    }
-  }
+  componentWillLoad() {
+    ApiService.validationApi()  
+    .then(data => {
+        console.log("Dados recebidos:", data);
+        this.data = data;
+        this.isLoading = false;
+    })
+    .catch(error => {
+        console.error("Erro ao validar com o backend:", error.message);
+    });
+}
 
   render() {
     if (this.isLoading) {
